@@ -1,0 +1,21 @@
+/* ============================================================
+   main.css — CSS orchestrator
+   Part of: Karthik GV Portfolio CSS Architecture
+
+   Import order matters:
+   1. reset        — normalize browser defaults
+   2. variables    — design tokens (must be before anything that uses them)
+   3. typography   — type scale and element defaults (uses variables)
+   4. layout       — structural primitives (uses variables)
+   5. components   — reusable UI components (uses layout + typography)
+   6. animations   — motion classes (uses variables)
+   7. responsive   — breakpoint overrides (must come last to override)
+   ============================================================ */
+
+@import './reset.css';
+@import './variables.css';
+@import './typography.css';
+@import './layout.css';
+@import './components.css';
+@import './animations.css';
+@import './responsive.css';

@@ -1,0 +1,137 @@
+/* ============================================================
+   reset.css — Browser normalization and box-model foundation
+   Part of: Karthik GV Portfolio CSS Architecture
+   ============================================================ */
+
+/* 1. Box-sizing — apply border-box universally */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Document — root defaults */
+html {
+    font-size: 100%;         /* respect user browser settings */
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    tab-size: 4;
+}
+
+/* 3. Body — prevent layout shifts */
+body {
+    min-height: 100dvh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* 4. Typography — inherit font settings */
+body,
+input,
+button,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* 5. Media — block and responsive by default */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* 6. Form elements — remove browser defaults */
+input,
+button,
+textarea,
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* 7. Typography elements */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+/* 8. Lists — remove default markers */
+ul,
+ol {
+    list-style: none;
+}
+
+/* 9. Links */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 10. Horizontal rule */
+hr {
+    border: none;
+    border-top: 1px solid currentColor;
+    opacity: 0.15;
+}
+
+/* 11. Tables */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* 12. Ensure accessible focus is not overridden globally
+   (individual components will define visible focus styles) */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--color-focus, #0070f3);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* 13. Scrollbar — subtle for Webkit */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border, rgba(0,0,0,0.2));
+    border-radius: 3px;
+}
+
+/* 14. Selection */
+::selection {
+    background: var(--color-primary, #0070f3);
+    color: var(--color-bg, #ffffff);
+}
