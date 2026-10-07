@@ -1,168 +1,110 @@
-/**
- * accessibility.js
- * Accessibility enhancements:
- *   - Focus management for keyboard navigation
- *   - Focus trap utilities (for modals / mobile menu)
- *   - Announce dynamic content to screen readers
- *   - Manage aria-live region
- *   - Keyboard shortcut hints
- *
- * @module accessibility
- */
+/* ════════════════════════════════════════════════════════════════
+   THE ARCHIVE — accessibility.js
+   Reduced-motion, keyboard navigation, focus management, live
+   announcements. The archive stays fully usable without 3D.
+   ════════════════════════════════════════════════════════════════ */
 
-/**
- * Initialise accessibility enhancements.
- * Called from main.js on DOMContentLoaded.
- */
-export function initAccessibility() {
-    initFocusClassTracking();
-    initAriaLiveRegion();
-    initSkipNav();
+/* ── Reduced motion ────────────────────────────────────────────── */
+const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+let reduced = mq.matches;
+
+export function prefersReducedMotion() {
+    return reduced;
 }
 
-// ── Focus class tracking ───────────────────────────────────────
-
-/**
- * Add 'is-keyboard-user' class to <body> when Tab key is used.
- * Remove it when mouse is clicked.
- * Allows CSS to show focus rings only for keyboard users.
- */
-function initFocusClassTracking() {
-    let isKeyboardUser = false;
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') {
-            if (!isKeyboardUser) {
-                isKeyboardUser = true;
-                document.body.classList.add('is-keyboard-user');
-            }
-        }
-    });
-
-    document.addEventListener('mousedown', () => {
-        if (isKeyboardUser) {
-            isKeyboardUser = false;
-            document.body.classList.remove('is-keyboard-user');
-        }
-    });
+export function watchReducedMotion(fn) {
+    const handler = (e) => {
+        reduced = e.matches;
+        document.documentElement.classList.toggle('reduced-motion', reduced);
+        if (fn) fn(reduced);
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
 }
 
-// ── Aria live region ───────────────────────────────────────────
+/* ── Live region announcements ─────────────────────────────────── */
+const live = document.createElement('div');
+live.className = 'sr-only';
+live.setAttribute('aria-live', 'polite');
+awaitReady(() => document.body.appendChild(live));
 
-/** @type {HTMLElement|null} */
-let liveRegion = null;
-
-/**
- * Create a hidden aria-live region for announcing dynamic
- * content changes to screen readers.
- * The element is appended to <body> once.
- */
-function initAriaLiveRegion() {
-    liveRegion = document.createElement('div');
-    liveRegion.setAttribute('role', 'status');
-    liveRegion.setAttribute('aria-live', 'polite');
-    liveRegion.setAttribute('aria-atomic', 'true');
-    liveRegion.className = 'sr-only';
-    liveRegion.id = 'aria-live-region';
-    document.body.appendChild(liveRegion);
+export function announce(msg) {
+    live.textContent = '';
+    setTimeout(() => { live.textContent = msg; }, 40);
 }
 
-/**
- * Announce a message to screen readers via the live region.
- * Clears previous message first to ensure re-announcement.
- *
- * @param {string}  message  - Text to announce
- * @param {'polite'|'assertive'} [politeness='polite']
- */
-export function announce(message, politeness = 'polite') {
-    if (!liveRegion) return;
-
-    liveRegion.setAttribute('aria-live', politeness);
-
-    // Brief empty assignment forces re-announcement of same message
-    liveRegion.textContent = '';
-
-    // Small timeout allows DOM update to register with AT
-    requestAnimationFrame(() => {
-        liveRegion.textContent = message;
-    });
-}
-
-// ── Skip navigation ────────────────────────────────────────────
+/* ── Focus management ──────────────────────────────────────────── */
+const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 /**
- * Ensure the skip-nav link correctly scrolls to main content
- * and focuses the main element for keyboard users.
- */
-function initSkipNav() {
-    const skipLink = document.querySelector('.skip-nav');
-    const mainContent = document.querySelector('main, [role="main"], #main-content');
-
-    if (!skipLink || !mainContent) return;
-
-    skipLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        mainContent.setAttribute('tabindex', '-1');
-        mainContent.focus({ preventScroll: false });
-
-        // Remove tabindex after focus to avoid persistent tab stop
-        mainContent.addEventListener('blur', () => {
-            mainContent.removeAttribute('tabindex');
-        }, { once: true });
-    });
-}
-
-// ── Focus trap ─────────────────────────────────────────────────
-
-/**
- * Trap keyboard focus within a container element.
- * Useful for modals, drawers, or dialogs.
- *
- * Returns a cleanup function to release the trap.
- *
- * @param {Element} container - Element to trap focus within
- * @returns {Function} cleanup — call to remove the trap
+ * Trap focus inside a container while it is open.
+ * @param {HTMLElement} container
  */
 export function trapFocus(container) {
-    const focusableSelectors = [
-        'a[href]',
-        'button:not([disabled])',
-        'input:not([disabled])',
-        'select:not([disabled])',
-        'textarea:not([disabled])',
-        '[tabindex]:not([tabindex="-1"])',
-    ].join(', ');
-
-    const getFocusable = () =>
-        Array.from(container.querySelectorAll(focusableSelectors)).filter(
-            (el) => !el.closest('[hidden]') && !el.closest('[aria-hidden="true"]')
-        );
-
-    const handleKeydown = (e) => {
+    const onKey = (e) => {
         if (e.key !== 'Tab') return;
-
-        const focusable = getFocusable();
-        if (!focusable.length) return;
-
-        const first = focusable[0];
-        const last  = focusable[focusable.length - 1];
-
-        if (e.shiftKey) {
-            if (document.activeElement === first) {
-                e.preventDefault();
-                last.focus();
-            }
-        } else {
-            if (document.activeElement === last) {
-                e.preventDefault();
-                first.focus();
-            }
+        const nodes = Array.from(container.querySelectorAll(FOCUSABLE)).filter((n) => n.offsetParent !== null);
+        if (!nodes.length) return;
+        const first = nodes[0];
+        const last = nodes[nodes.length - 1];
+        const active = document.activeElement;
+        if (!container.contains(active)) {
+            e.preventDefault();
+            (e.shiftKey ? last : first).focus();
+            return;
+        }
+        if (e.shiftKey && active === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && active === last) {
+            e.preventDefault();
+            first.focus();
         }
     };
-
-    container.addEventListener('keydown', handleKeydown);
-
-    return function cleanup() {
-        container.removeEventListener('keydown', handleKeydown);
-    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
 }
+
+export function removeReturn() {}
+
+/* ── Keyboard navigation (global) ──────────────────────────────── */
+export function bindKeyboard(actions) {
+    document.addEventListener('keydown', (e) => {
+        const t = e.target;
+        const typing = t && ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName);
+
+        if (e.key === 'Escape') {
+            if (actions.onEscape) actions.onEscape();
+            return;
+        }
+        if (typing) return;
+
+        if (e.key.toLowerCase() === 'm') {
+            if (!e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+                e.preventDefault();
+                if (actions.onMapToggle) actions.onMapToggle();
+            }
+            return;
+        }
+        if (actions.onArrow) {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                actions.onArrow(e.key === 'ArrowRight' ? 1 : -1);
+            }
+        }
+    });
+}
+
+/* ── helpers ───────────────────────────────────────────────────── */
+function awaitReady(fn) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fn, { once: true });
+    } else {
+        fn();
+    }
+}
+
+export const ready = (fn) =>
+    document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', fn, { once: true })
+        : fn();

@@ -1,255 +1,85 @@
-/* ============================================================
-   variables.css — Central design tokens
-   Part of: Karthik GV Portfolio CSS Architecture
-   Visual Identity: MODERN SOUTH INDIAN EDITORIAL
-   ============================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* ════════════════════════════════════════════════════════════════
+   THE ARCHIVE — design tokens
+   Cinematic industrial / brutalist editorial environment.
+   Dark architectural room. Warm brass light. Bone paper documents.
+   ════════════════════════════════════════════════════════════════ */
 
 :root {
+    /* ── Colour · architecture ─────────────────────────────── */
+    --ink-0:        #0a0b0d;   /* deep void                          */
+    --ink-1:        #101216;   /* room wall                          */
+    --ink-2:        #15191f;   /* raised surface                     */
+    --ink-3:        #1c212a;   /* interactive surface                */
 
-    /* ----------------------------------------------------------
-       COLOR PALETTE — MODERN SOUTH INDIAN EDITORIAL
-       Hierarchy:
-         70–80%: Warm Ivory / Paper / Deep Charcoal
-         15–20%: Maroon / Terracotta / Indigo
-         5%:     Saffron / Antique Brass / Muted Green
-    ---------------------------------------------------------- */
+    --line-whisper: rgba(232, 226, 208, 0.05);
+    --line-soft:    rgba(232, 226, 208, 0.08);
+    --line:         rgba(232, 226, 208, 0.14);
+    --line-strong:  rgba(232, 226, 208, 0.22);
 
-    /* Core Architectural & Paper Surfaces (70–80%) */
-    --color-ivory:            #F7F1E6;   /* Warm Ivory — primary page surface */
-    --color-paper:            #FFFDF7;   /* Elevated paper surface */
-    --color-paper-dim:        #F1EAD9;   /* Muted paper / marginal tone */
-    --color-paper-card:       #FAF6EE;   /* Card surface */
-    --color-charcoal:         #211C19;   /* Deep Charcoal ink — primary text */
-    --color-charcoal-muted:   #5A524C;   /* Secondary charcoal — body text */
-    --color-charcoal-light:   #887E74;   /* Tertiary charcoal — captions/metadata */
+    --bone:         #e8e2d0;   /* primary text / paper               */
+    --bone-dim:     #b8b3a4;   /* secondary text                     */
+    --bone-faint:   #8a877b;   /* tertiary / metadata                */
 
-    /* Cultural Editorial Accents (15–20%) */
-    --color-maroon:           #762B32;   /* Deep Maroon ink — dominant cultural accent */
-    --color-maroon-hover:     #5E2026;   /* Deepened maroon */
-    --color-maroon-subtle:    rgba(118, 43, 50, 0.08);
+    --brass:        #c9a45b;   /* architectural accent / lamp glow   */
+    --brass-strong: #e6c07a;
+    --brass-dim:    rgba(201, 164, 91, 0.55);
+    --brass-glow:   rgba(201, 164, 91, 0.12);
+    --brass-subtle: rgba(201, 164, 91, 0.06);
 
-    --color-terracotta:       #B95C3D;   /* Warm Terracotta */
-    --color-terracotta-hover: #9E492D;
-    --color-terracotta-subtle:rgba(185, 92, 61, 0.09);
+    --steel:        #6e7683;   /* inactive technical metal           */
+    --verified:     #9db487;   /* status: verified                   */
+    --signal:       #d08a5a;   /* active signal / warning            */
 
-    --color-indigo:           #263B52;   /* Archival Indigo */
-    --color-indigo-hover:     #1E2E40;
-    --color-indigo-subtle:    rgba(38, 59, 82, 0.08);
+    /* ── Surfaces & Shadows (Subtle Depth) ─────────────────── */
+    --surface-card:       rgba(18, 22, 28, 0.82);
+    --surface-card-hover: rgba(24, 30, 38, 0.94);
+    --shadow-subtle:      0 8px 24px -4px rgba(0, 0, 0, 0.45);
+    --shadow-elevated:    0 20px 48px -8px rgba(0, 0, 0, 0.65);
+    --highlight-top:      inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
-    /* Controlled Highlighting Accents (5%) */
-    --color-saffron:          #D38A32;   /* Saffron / Turmeric gold */
-    --color-saffron-subtle:   rgba(211, 138, 50, 0.12);
-    --color-muted-green:      #566653;   /* Temple court muted green */
-    --color-green-subtle:     rgba(86, 102, 83, 0.10);
-    --color-brass:            #B58A45;   /* Antique Brass rule / ornament */
-    --color-brass-subtle:     rgba(181, 138, 69, 0.14);
+    /* ── Lighting · cinematic overlays ─────────────────────── */
+    --lit-ambient:   radial-gradient(1400px 900px at 50% 16%, rgba(245, 215, 155, 0.035), transparent 65%);
+    --lit-lamp:      radial-gradient(520px 620px at 62% 22%, rgba(240, 195, 115, 0.13), transparent 72%);
+    --lit-entry:     radial-gradient(1100px 750px at 50% 55%, rgba(225, 185, 115, 0.075), transparent 75%);
+    --vignette:      radial-gradient(130% 95% at 50% 45%, transparent 40%, rgba(6, 7, 9, 0.78) 100%);
+    --floor-fade:    linear-gradient(to bottom, transparent 60%, rgba(6, 7, 9, 0.88) 100%);
 
-    /* Functional Mappings */
-    --color-bg:               var(--color-ivory);
-    --color-bg-elevated:      var(--color-paper);
-    --color-bg-overlay:       var(--color-paper-card);
-    --color-bg-subtle:        var(--color-paper-dim);
+    /* ── Depth · scene geometry ────────────────────────────── */
+    --perspective:        1600px;
+    --depth-shelf:        -180px;   /* parallax layer · far          */
+    --depth-object:       -60px;    /* parallax layer · near         */
+    --depth-hover:        -4px;     /* stable subtle hover elevation */
 
-    --color-text-primary:     var(--color-charcoal);
-    --color-text-secondary:   var(--color-charcoal-muted);
-    --color-text-tertiary:    var(--color-charcoal-light);
-    --color-text-inverse:     var(--color-paper);
+    /* ── Typography ────────────────────────────────────────── */
+    --font-display: "Fraunces", "Cormorant Garamond", Georgia, serif;
+    --font-ui:      "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --font-mono:    "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
 
-    --color-primary:          var(--color-maroon);
-    --color-primary-hover:    var(--color-maroon-hover);
-    --color-primary-muted:    var(--color-maroon-subtle);
+    --fs-ms:        clamp(0.70rem, 0.6vw + 0.5rem, 0.80rem);
+    --fs-sm:        clamp(0.78rem, 0.5vw + 0.62rem, 0.90rem);
+    --fs-md:        clamp(0.92rem, 0.6vw + 0.74rem, 1.05rem);
+    --fs-lg:        clamp(1.15rem, 1vw + 0.85rem, 1.45rem);
+    --fs-xl:        clamp(1.6rem, 1.6vw + 1.1rem, 2.4rem);
+    --fs-2xl:       clamp(2.1rem, 3.2vw + 1.2rem, 4.2rem);
+    --fs-3xl:       clamp(2.8rem, 5.5vw + 1.2rem, 6.5rem);
 
-    --color-secondary:        var(--color-terracotta);
-    --color-secondary-hover:  var(--color-terracotta-hover);
-    --color-secondary-muted:  var(--color-terracotta-subtle);
+    --track-wide:   0.14em;
+    --track-mid:    0.07em;
 
-    --color-accent:           var(--color-brass);
+    /* ── Rhythm ────────────────────────────────────────────── */
+    --space-1: 0.35rem;
+    --space-2: 0.75rem;
+    --space-3: 1.25rem;
+    --space-4: 2rem;
+    --space-5: 3.25rem;
+    --space-6: 5rem;
 
-    /* Editorial Print Chrome & Hairlines */
-    --color-border:           rgba(33, 28, 25, 0.14);
-    --color-border-strong:    rgba(33, 28, 25, 0.32);
-    --color-divider:          rgba(33, 28, 25, 0.09);
-    --color-rule-maroon:      rgba(118, 43, 50, 0.25);
-    --color-rule-brass:       rgba(181, 138, 69, 0.35);
+    --content-max: 1180px;
 
-    /* Semantic states */
-    --color-success:          var(--color-muted-green);
-    --color-warning:          var(--color-saffron);
-    --color-error:            #9B2828;
-    --color-info:             var(--color-indigo);
-
-    /* Accessibility focus ring */
-    --color-focus:            var(--color-maroon);
-
-    /* ----------------------------------------------------------
-       TYPOGRAPHY
-    ---------------------------------------------------------- */
-
-    /* Display / editorial headline serif */
-    --font-display:    'Cormorant Garamond', 'Georgia', serif;
-
-    /* Body / editorial navigation sans-serif */
-    --font-body:       'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-
-    /* Mono — technical coordinates, diagrams, metadata */
-    --font-mono:       'JetBrains Mono', 'Consolas', monospace;
-
-    /* Type scale — fluid using clamp() */
-    --text-xs:         clamp(0.6875rem, 0.62rem + 0.25vw, 0.8125rem); /*  11–13px */
-    --text-sm:         clamp(0.8125rem, 0.75rem + 0.25vw, 0.9375rem); /*  13–15px */
-    --text-base:       clamp(0.9375rem, 0.88rem + 0.25vw, 1.0625rem); /*  15–17px */
-    --text-md:         clamp(1.0625rem, 0.98rem + 0.35vw, 1.1875rem); /*  17–19px */
-    --text-lg:         clamp(1.1875rem, 1.05rem + 0.5vw,  1.375rem);  /*  19–22px */
-    --text-xl:         clamp(1.375rem,  1.2rem + 0.75vw, 1.75rem);   /*  22–28px */
-    --text-2xl:        clamp(1.75rem,   1.45rem + 1.2vw, 2.375rem);  /*  28–38px */
-    --text-3xl:        clamp(2.25rem,   1.8rem + 1.8vw,  3.25rem);   /*  36–52px */
-    --text-4xl:        clamp(2.875rem,  2.2rem + 2.7vw,  4.5rem);    /*  46–72px */
-    --text-5xl:        clamp(3.5rem,    2.6rem + 3.8vw,  6.25rem);   /*  56–100px */
-
-    /* Line heights */
-    --leading-none:    1;
-    --leading-tight:   1.08;
-    --leading-snug:    1.25;
-    --leading-normal:  1.55;
-    --leading-relaxed: 1.7;
-    --leading-loose:   1.9;
-
-    /* Letter spacing */
-    --tracking-tight:    -0.025em;
-    --tracking-snug:     -0.01em;
-    --tracking-normal:    0em;
-    --tracking-wide:      0.05em;
-    --tracking-wider:     0.12em;
-    --tracking-widest:    0.22em;
-
-    /* Font weights */
-    --weight-light:    300;
-    --weight-regular:  400;
-    --weight-medium:   500;
-    --weight-semibold: 600;
-    --weight-bold:     700;
-
-    /* ----------------------------------------------------------
-       SPACING SCALE (Based on editorial grid)
-    ---------------------------------------------------------- */
-
-    --space-1:    0.25rem;   /*  4px */
-    --space-2:    0.5rem;    /*  8px */
-    --space-3:    0.75rem;   /* 12px */
-    --space-4:    1rem;      /* 16px */
-    --space-5:    1.25rem;   /* 20px */
-    --space-6:    1.5rem;    /* 24px */
-    --space-8:    2rem;      /* 32px */
-    --space-10:   2.5rem;    /* 40px */
-    --space-12:   3rem;      /* 48px */
-    --space-16:   4rem;      /* 64px */
-    --space-20:   5rem;      /* 80px */
-    --space-24:   6rem;      /* 96px */
-    --space-32:   8rem;      /* 128px */
-    --space-40:   10rem;     /* 160px */
-    --space-48:   12rem;     /* 192px */
-
-    /* Semantic aliases */
-    --space-xs:   var(--space-2);
-    --space-sm:   var(--space-4);
-    --space-md:   var(--space-6);
-    --space-lg:   var(--space-10);
-    --space-xl:   var(--space-16);
-    --space-2xl:  var(--space-24);
-    --space-3xl:  var(--space-32);
-
-    /* Section vertical rhythm */
-    --section-padding-y:  clamp(5rem, 9vw, 9.5rem);
-    --section-padding-x:  clamp(1.5rem, 5.5vw, 4rem);
-
-    /* ----------------------------------------------------------
-       EDITORIAL LAYOUT
-    ---------------------------------------------------------- */
-
-    --container-max:        1400px;
-    --container-wide:       1240px;
-    --container-content:    840px;
-    --container-narrow:     660px;
-    --container-gutter:     clamp(1.5rem, 5vw, 3.5rem);
-
-    --grid-columns:         12;
-    --grid-gap:             clamp(1.25rem, 2.5vw, 2.25rem);
-
-    /* ----------------------------------------------------------
-       BORDER RADIUS — Sharp, Architectural & Minimalist
-    ---------------------------------------------------------- */
-
-    --radius-none:    0px;
-    --radius-sm:      2px;
-    --radius-md:      3px;
-    --radius-lg:      4px;
-    --radius-xl:      6px;
-    --radius-2xl:     8px;
-    --radius-full:    9999px;
-
-    /* ----------------------------------------------------------
-       SHADOWS — Tactile, Warm, Diffuse Paper Depth
-    ---------------------------------------------------------- */
-
-    --shadow-sm:  0 1px 3px rgba(33, 28, 25, 0.05);
-    --shadow-md:  0 4px 16px rgba(33, 28, 25, 0.07);
-    --shadow-lg:  0 12px 32px rgba(33, 28, 25, 0.09);
-    --shadow-xl:  0 20px 48px rgba(33, 28, 25, 0.12);
-    --shadow-paper: 0 1px 1px rgba(33, 28, 25, 0.04), 0 8px 24px rgba(33, 28, 25, 0.06);
-
-    /* ----------------------------------------------------------
-       Z-INDEX LAYERS
-    ---------------------------------------------------------- */
-
-    --z-below:      -1;
-    --z-base:        0;
-    --z-raised:      10;
-    --z-dropdown:    100;
-    --z-sticky:      200;
-    --z-overlay:     300;
-    --z-modal:       400;
-    --z-toast:       500;
-    --z-tooltip:     600;
-    --z-skip:        9999;
-
-    /* ----------------------------------------------------------
-       MOTION / ANIMATION
-       Editorial print becoming digital: purposeful & graceful.
-    ---------------------------------------------------------- */
-
-    --motion-instant:  0ms;
-    --motion-fast:     180ms;
-    --motion-normal:   350ms;
-    --motion-slow:     550ms;
-    --motion-slower:   800ms;
-    --motion-crawl:    1200ms;
-
-    /* Easing functions */
-    --ease-in:       cubic-bezier(0.4, 0, 1, 1);
-    --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
-    --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
-    --ease-editorial:cubic-bezier(0.22, 1, 0.36, 1);
-    --ease-smooth:   cubic-bezier(0.25, 0.1, 0.25, 1);
-
-    /* ----------------------------------------------------------
-       NAVIGATION
-    ---------------------------------------------------------- */
-
-    --nav-height:          72px;
-    --nav-height-scrolled: 60px;
-}
-
-/* -------------------------------------------------------
-   Reduced motion — honor user system preference
-------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-    :root {
-        --motion-fast:   0ms;
-        --motion-normal: 0ms;
-        --motion-slow:   0ms;
-        --motion-slower: 0ms;
-        --motion-crawl:  0ms;
-    }
+    /* ── Motion (Silky Subtle Easing) ──────────────────────── */
+    --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-inout:  cubic-bezier(0.65, 0, 0.35, 1);
+    --t-fast:      160ms;
+    --t-med:       340ms;
+    --t-slow:      750ms;
 }

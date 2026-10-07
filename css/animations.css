@@ -1,184 +1,69 @@
-/* ============================================================
-   animations.css — Editorial Motion System
-   Part of: Karthik GV Portfolio CSS Architecture
-   Visual Identity: MODERN SOUTH INDIAN EDITORIAL
-   Theme: "Editorial Print Becoming Digital"
-   ============================================================ */
+/* ════════════════════════════════════════════════════════════════
+   THE ARCHIVE — animations
+   Scene entry, camera drift, reveal stagger, focus lighting.
+   ════════════════════════════════════════════════════════════════ */
 
-/* ----------------------------------------------------------
-   REVEAL — FADE & GENTLE EDITORIAL TRANSLATION
----------------------------------------------------------- */
-
-.reveal {
+/* ── Room arrival choreography ─────────────────────────────────── */
+.room .anim-in {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px) translateZ(0);
+}
+
+.room.is-active .anim-in {
+    opacity: 1;
+    transform: translateY(0);
     transition:
-        opacity   var(--motion-slow) var(--ease-editorial),
-        transform var(--motion-slow) var(--ease-editorial);
-    will-change: opacity, transform;
+        opacity var(--t-slow) var(--ease-out),
+        transform var(--t-slow) var(--ease-out);
+    transition-delay: var(--stagger, 0ms);
 }
 
-.reveal.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+/* stagger utility */
+.st-1 { --stagger: 60ms; }
+.st-2 { --stagger: 140ms; }
+.st-3 { --stagger: 240ms; }
+.st-4 { --stagger: 360ms; }
+.st-5 { --stagger: 480ms; }
+
+/* ── Ambient camera drift (subtle) ─────────────────────────────── */
+@keyframes drift {
+    from { transform: rotateX(1deg) rotateY(-1.2deg); }
+    to   { transform: rotateX(0deg) rotateY(1.0deg); }
 }
 
-/* Stagger Delays for Grouped Elements */
-.reveal-stagger > * {
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-        opacity   var(--motion-slow) var(--ease-editorial),
-        transform var(--motion-slow) var(--ease-editorial);
-    will-change: opacity, transform;
+/* ── Lamp flicker warmth ───────────────────────────────────────── */
+@keyframes lamp-glow {
+    0%, 100% { opacity: 0.85; }
+    46% { opacity: 0.9; }
+    49% { opacity: 0.7; }
+    52% { opacity: 0.95; }
 }
 
-.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 40ms; }
-.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 120ms; }
-.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 200ms; }
-.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 280ms; }
-.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 360ms; }
-.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 440ms; }
-
-.reveal-stagger.is-visible > * {
-    opacity: 1;
-    transform: translateY(0);
+.lamp__beam {
+    animation: lamp-glow 9s ease-in-out infinite;
 }
 
-/* ----------------------------------------------------------
-   LINE DRAWING — HAIRLINES EXPANDING ACROSS THE SPREAD
----------------------------------------------------------- */
-
-.line-draw {
-    transform-origin: left center;
-    transform: scaleX(0);
-    transition: transform var(--motion-slower) var(--ease-editorial);
+/* ── Canvas fallback particles ─────────────────────────────────── */
+@keyframes particle-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(0, -14vh, 0); }
 }
 
-.line-draw.is-visible {
-    transform: scaleX(1);
-}
-
-/* ----------------------------------------------------------
-   CLIPPING TEXT REVEAL (Editorial Headline Curtain)
----------------------------------------------------------- */
-
-.editorial-clip-reveal {
-    overflow: hidden;
-    display: block;
-}
-
-.editorial-clip-reveal > * {
-    transform: translateY(100%);
-    opacity: 0;
-    transition: transform var(--motion-slow) var(--ease-editorial),
-                opacity var(--motion-slow) var(--ease-editorial);
-}
-
-.editorial-clip-reveal.is-visible > * {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-/* ----------------------------------------------------------
-   TECHNICAL DIAGRAM NODE PROGRESSIVE ANIMATION
----------------------------------------------------------- */
-
-.system-flow .system-node {
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: opacity var(--motion-normal) var(--ease-out),
-                transform var(--motion-normal) var(--ease-out),
-                border-color var(--motion-fast) var(--ease-out);
-}
-
-.project-spread.is-visible .system-flow .system-node:nth-child(1) {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 150ms;
-}
-
-.project-spread.is-visible .system-flow .system-node:nth-child(3) {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 300ms;
-}
-
-.project-spread.is-visible .system-flow .system-node:nth-child(5) {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 450ms;
-}
-
-.project-spread.is-visible .system-flow .system-node:nth-child(7) {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 600ms;
-}
-
-/* Connectors drawing down */
-.system-flow .system-node__connector {
-    opacity: 0;
-    transition: opacity var(--motion-normal) var(--ease-out);
-}
-
-.project-spread.is-visible .system-flow .system-node__connector:nth-child(2) {
-    opacity: 1;
-    transition-delay: 220ms;
-}
-
-.project-spread.is-visible .system-flow .system-node__connector:nth-child(4) {
-    opacity: 1;
-    transition-delay: 370ms;
-}
-
-.project-spread.is-visible .system-flow .system-node__connector:nth-child(6) {
-    opacity: 1;
-    transition-delay: 520ms;
-}
-
-/* ----------------------------------------------------------
-   PROJECT SPREAD HOVER & FOCUS INTERACTIONS
----------------------------------------------------------- */
-
-.project-spread {
-    transition: border-color var(--motion-normal) var(--ease-out),
-                box-shadow var(--motion-normal) var(--ease-out),
-                transform var(--motion-normal) var(--ease-out);
-}
-
-.project-spread:hover .project-spread__number,
-.project-spread:focus-within .project-spread__number {
-    color: var(--color-terracotta);
-    transform: scale(1.04);
-}
-
-.project-spread:hover .diagram-badge,
-.project-spread:focus-within .diagram-badge {
-    border-color: var(--color-maroon);
-    color: var(--color-maroon);
-}
-
-/* ----------------------------------------------------------
-   ACCESSIBILITY — PREFERS-REDUCED-MOTION
-   Completely bypass all motion when requested by the OS.
----------------------------------------------------------- */
-
+/* ── Reduced motion: full override ─────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-    .reveal,
-    .reveal-stagger > *,
-    .line-draw,
-    .editorial-clip-reveal > *,
-    .system-flow .system-node,
-    .system-flow .system-node__connector {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
+    .room .anim-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .lamp__beam,
+    .diagram .edge,
+    .dot-flow {
         animation: none !important;
     }
 
-    .project-spread:hover,
-    .project-spread:focus-within {
-        transform: none !important;
+    .world {
+        transition: none !important;
     }
 }
